@@ -1,0 +1,12 @@
+package org.pshenko.javacore.basics;
+
+public class ArraysLesson {
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 5};
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+        }
+        arr[0] = 5;
+        System.out.println("new value = " + arr[0]);
+    }
+}
