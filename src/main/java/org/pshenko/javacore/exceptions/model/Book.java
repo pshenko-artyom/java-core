@@ -1,4 +1,4 @@
-package org.pshenko.javacore.exceptions;
+package org.pshenko.javacore.exceptions.model;
 
 public class Book {
     private String title;

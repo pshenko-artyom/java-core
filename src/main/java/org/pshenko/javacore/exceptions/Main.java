@@ -1,9 +1,13 @@
 package org.pshenko.javacore.exceptions;
 
+import org.pshenko.javacore.exceptions.exception.ItemNotFoundException;
+import org.pshenko.javacore.exceptions.exception.NoAvailableCopiesException;
+import org.pshenko.javacore.exceptions.service.Library;
+
 import java.util.Scanner;
 
-import static org.pshenko.javacore.exceptions.Util.readInt;
-import static org.pshenko.javacore.exceptions.Util.readNonEmptyString;
+import static org.pshenko.javacore.exceptions.util.Util.readInt;
+import static org.pshenko.javacore.exceptions.util.Util.readNonEmptyString;
 
 public class Main {
 

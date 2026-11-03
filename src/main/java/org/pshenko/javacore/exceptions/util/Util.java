@@ -1,4 +1,4 @@
-package org.pshenko.javacore.exceptions;
+package org.pshenko.javacore.exceptions.util;
 
 import java.util.Scanner;
 

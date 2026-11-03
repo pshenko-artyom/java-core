@@ -1,4 +1,8 @@
-package org.pshenko.javacore.exceptions;
+package org.pshenko.javacore.exceptions.service;
+
+import org.pshenko.javacore.exceptions.exception.ItemNotFoundException;
+import org.pshenko.javacore.exceptions.exception.NoAvailableCopiesException;
+import org.pshenko.javacore.exceptions.model.Book;
 
 public class Library {
     private static final int MAX_CAPACITY = 100;
