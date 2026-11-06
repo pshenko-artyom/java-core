@@ -55,7 +55,7 @@ public class Main {
         String name = readNonEmptyString(scanner, "Введите имя: ");
         List<Contact> candidates = contactService.getContactsByName(name);
         Contact contactToDelete;
-        
+
         if (candidates.isEmpty()) {
             System.out.printf("Контактов с именем \"%s\" не найдено%n", name);
             return;
@@ -75,7 +75,11 @@ public class Main {
         }
 
         if (contactService.deleteContact(contactToDelete)) {
-            System.out.printf("Контакт \"%s\" успешно удален!%n", contactToDelete.getName());
+            System.out.printf(
+                "Контакт \"%s\" с номером телефона %s успешно удален!%n",
+                contactToDelete.getName(),
+                contactToDelete.getPhone()
+            );
         } else {
             System.out.printf("Контакт \"%s\" не найден!%n", contactToDelete.getName());
         }
