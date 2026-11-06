@@ -45,6 +45,7 @@ public class ContactManager {
                 default -> System.out.println("Некорректный ввод! Допустимы числа от 1 до 5");
             }
         } while (input != EXIT);
+        scanner.close();
     }
 
     private static void addContact(String name, String phone) {
