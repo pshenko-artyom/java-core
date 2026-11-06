@@ -54,6 +54,7 @@ public class Main {
                     break;
             }
         } while (input != EXIT);
+        scanner.close();
     }
 
     private static void addPublication(Library library, Scanner scanner) {
