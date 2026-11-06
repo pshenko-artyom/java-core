@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class Util {
 
-
     public static int readInt(Scanner scanner, String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -24,6 +23,14 @@ public class Util {
                 return value;
             }
             System.out.println("Поле не может быть пустым!");
+        }
+    }
+
+    public static int readIntInRange(Scanner sc, String prompt, int min, int max) {
+        while (true) {
+            int value = readInt(sc, prompt);
+            if (value >= min && value <= max) return value;
+            System.out.printf("Введите число от %d до %d!%n", min, max);
         }
     }
 }
