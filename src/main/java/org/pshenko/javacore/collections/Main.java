@@ -48,10 +48,14 @@ public class Main {
     }
 
     private static void deleteContact(Scanner scanner, ContactService contactService) {
+
+        List<Contact> allContacts = contactService.getContacts();
+        printContacts(allContacts);
+
         String name = readNonEmptyString(scanner, "Введите имя: ");
         List<Contact> candidates = contactService.getContactsByName(name);
         Contact contactToDelete;
-
+        
         if (candidates.isEmpty()) {
             System.out.printf("Контактов с именем \"%s\" не найдено%n", name);
             return;
