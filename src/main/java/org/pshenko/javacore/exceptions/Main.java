@@ -79,7 +79,7 @@ public class Main {
                     System.out.println("Некорректный ввод! Допустимы числа от 1 до 5");
             }
         } while (input != EXIT);
+        scanner.close();
     }
-
-
+    
 }
