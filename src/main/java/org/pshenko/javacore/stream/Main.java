@@ -58,12 +58,10 @@ public class Main {
         // Задание 4. Получите список продуктов, заказанных клиентом второго уровня между 01-фев-2026 и 01-апр-2026.
         List<Product> lvl2CustomerProducts = customers.stream()
             .filter(customer -> customer.getLevel().equals(2L))
-            .map(Customer::getOrders)
-            .flatMap(Set::stream)
+            .flatMap(customer -> customer.getOrders().stream())
             .filter(order -> !order.getOrderDate().isBefore(LocalDate.of(2021, 2, 1))
                 && !order.getOrderDate().isAfter(LocalDate.of(2021, 4, 1)))
-            .map(Order::getProducts)
-            .flatMap(Set::stream)
+            .flatMap(order -> order.getProducts().stream())
             .distinct()
             .toList();
         System.out.println("\nЗадание 4. Получите список продуктов, заказанных клиентом второго уровня между " +
@@ -79,10 +77,30 @@ public class Main {
             .sorted(Comparator.comparing(Product::getPrice))
             .limit(2)
             .toList();
-        System.out.println("Задание 5: Получите топ 2 самые дешевые продукты из категории \"Books\"");
+        System.out.println("\nЗадание 5: Получите топ 2 самые дешевые продукты из категории \"Books\"");
         topTwoCheapestBookProducts.forEach(System.out::println);
 
+        // Задание 6: Получите 3 самых последних сделанных заказа.
+        List<Order> threeLatestOrders = customers.stream()
+            .flatMap(customer -> customer.getOrders().stream())
+            .sorted(Comparator.comparing(Order::getOrderDate).reversed())
+            .limit(3)
+            .toList();
+        System.out.println("\nЗадание 6: Получите 3 самых последних сделанных заказа.");
+        threeLatestOrders.forEach(System.out::println);
 
+        //Задание 7: Получите список заказов, сделанных 15-марта-2021, выведите id заказов в консоль и затем верните
+        //список их продуктов.
+        List<Product> productsFrom15MarchOrders = customers.stream()
+            .flatMap(customer -> customer.getOrders().stream())
+            .filter(order -> order.getOrderDate().equals(LocalDate.of(2021, 3, 15)))
+            .peek(order -> System.out.println(order.getId()))
+            .flatMap(order -> order.getProducts().stream())
+            .distinct()
+            .toList();
+        System.out.println("\nЗадание 7: Получите список заказов, сделанных 15-марта-2021, выведите id заказов в " +
+            "консоль и затем верните список их продуктов.");
+        productsFrom15MarchOrders.forEach(System.out::println);
     }
 
 
@@ -120,13 +138,13 @@ public class Main {
         Order maryOrder2 = createOrder(2002L, 20, "SHIPPED", Set.of(vacuumCleaner, childrenPuzzle));
         Order maryOrder3 = createOrder(2003L, 41, "DELIVERED", Set.of(coffeeMachine, kettle, headphones));
         Order maryOrder4 = createOrder(2004L, 45, "NEW", Set.of(laptop, backpack, buildingBlocks));
-        Order maryOrder5 = createOrder(2005L, 59, "PAID", Set.of(monitor, keyboard, mouse, cleanCode));
+        Order maryOrder5 = createOrder(2005L, 73, "PAID", Set.of(monitor, keyboard, mouse, cleanCode));
 
         // Customer 3 — Alex Brown
         Order alexOrder1 = createOrder(3001L, 2, "NEW", Set.of(keyboard, mouse));
         Order alexOrder2 = createOrder(3002L, 12, "PAID", Set.of(printer, javaConcurrency));
         Order alexOrder3 = createOrder(3003L, 30, "SHIPPED", Set.of(laptop, monitor));
-        Order alexOrder4 = createOrder(3004L, 47, "DELIVERED", Set.of(smartphone, headphones));
+        Order alexOrder4 = createOrder(3004L, 73, "DELIVERED", Set.of(smartphone, headphones));
         Order alexOrder5 = createOrder(3005L, 55, "CANCELLED", Set.of(vacuumCleaner, lamp));
 
         // Customer 4 — Emily Davis
