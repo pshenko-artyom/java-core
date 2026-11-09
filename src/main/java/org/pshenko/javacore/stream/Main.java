@@ -169,7 +169,7 @@ public class Main {
         }
 
         System.out.println("\nЗадание 12. Создайте Map<Customer, List<Order>> → key - покупатель, value - список его " +
-            "заказов\n");
+            "заказов");
         Map<Customer, List<Order>> customersWithOrders = customers.stream()
             .collect(Collectors.toMap(Function.identity(), customer -> customer.getOrders().stream().toList()));
         for (Map.Entry<Customer, List<Order>> entry : customersWithOrders.entrySet()) {
@@ -177,7 +177,7 @@ public class Main {
         }
 
         System.out.println("\nЗадание 13. Создайте Map<Order, Double> → key - заказ, value - общая сумма продуктов " +
-            "заказа.\n");
+            "заказа.");
         Map<Order, Double> orderWithCost = customers.stream()
             .flatMap(customer -> customer.getOrders().stream())
             .collect(Collectors.toMap(Function.identity(),
