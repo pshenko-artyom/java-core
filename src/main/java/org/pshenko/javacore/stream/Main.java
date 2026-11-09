@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -197,7 +198,18 @@ public class Main {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
 
-
+        System.out.println("\nЗадание 15. Получите Map<String, Product> → самый дорогой продукт по каждой категории");
+        Map<String, Product> mostExpensiveProducts = customers.stream()
+            .flatMap(customer -> customer.getOrders().stream())
+            .flatMap(order -> order.getProducts().stream())
+            .collect(Collectors.toMap(
+                Product::getCategory,
+                Function.identity(),
+                BinaryOperator.maxBy(Comparator.comparing(Product::getPrice))
+            ));
+        for (Map.Entry<String, Product> entry : mostExpensiveProducts.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
     }
 
 
