@@ -91,16 +91,49 @@ public class Main {
 
         //Задание 7: Получите список заказов, сделанных 15-марта-2021, выведите id заказов в консоль и затем верните
         //список их продуктов.
+        System.out.println("\nЗадание 7: Получите список заказов, сделанных 15-марта-2021, выведите id заказов в " +
+            "консоль и затем верните список их продуктов.");
         List<Product> productsFrom15MarchOrders = customers.stream()
             .flatMap(customer -> customer.getOrders().stream())
             .filter(order -> order.getOrderDate().equals(LocalDate.of(2021, 3, 15)))
-            .peek(order -> System.out.println(order.getId()))
+            .peek(order -> System.out.println("Id заказа, сделанного 15 марта: " + order.getId()))
             .flatMap(order -> order.getProducts().stream())
             .distinct()
             .toList();
-        System.out.println("\nЗадание 7: Получите список заказов, сделанных 15-марта-2021, выведите id заказов в " +
-            "консоль и затем верните список их продуктов.");
         productsFrom15MarchOrders.forEach(System.out::println);
+
+        //Задание 8: Рассчитайте общую сумму всех заказов, сделанных в феврале 2021.
+        System.out.println("\nЗадание 8: Рассчитайте общую сумму всех заказов, сделанных в феврале 2021.");
+        BigDecimal totalFebruaryPrice = customers.stream()
+            .flatMap(customer -> customer.getOrders().stream())
+            .filter(order -> !order.getOrderDate().isBefore(LocalDate.of(2021, 2, 1))
+                && order.getOrderDate().isBefore(LocalDate.of(2021, 3, 1)))
+            .flatMap(order -> order.getProducts().stream())
+            .map(Product::getPrice)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        System.out.println("Сумма всех заказов в феврале равна: " + totalFebruaryPrice);
+
+        //Задание 9: Рассчитайте средний платеж по заказам, сделанным 14-марта-2021.
+        System.out.println("\nЗадание 9: Рассчитайте средний платеж по заказам, сделанным 14-марта-2021.");
+        List<Order> orders14March = customers.stream()
+            .flatMap(customer -> customer.getOrders().stream())
+            .filter(order -> order.getOrderDate().equals(LocalDate.of(2021, 3, 14)))
+            .toList();
+        System.out.println("Заказы на 14 марта 2021 года: ");
+        orders14March.forEach(System.out::println);
+
+        List<BigDecimal> ordersTotals = orders14March.stream()
+            .map(order ->
+                order.getProducts().stream()
+                    .map(Product::getPrice)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add))
+            .toList();
+        BigDecimal average = ordersTotals.isEmpty()
+            ? BigDecimal.ZERO
+            : ordersTotals.stream()
+            .reduce(BigDecimal.ZERO, BigDecimal::add)
+            .divide(BigDecimal.valueOf(orders14March.size()), 2, BigDecimal.ROUND_HALF_UP);
+        System.out.println("Средний чек заказа 14 марта 2021 года: " + average);
     }
 
 
@@ -148,7 +181,7 @@ public class Main {
         Order alexOrder5 = createOrder(3005L, 55, "CANCELLED", Set.of(vacuumCleaner, lamp));
 
         // Customer 4 — Emily Davis
-        Order emilyOrder1 = createOrder(4001L, 7, "DELIVERED", Set.of(coffeeMachine, javaConcurrency));
+        Order emilyOrder1 = createOrder(4001L, 72, "DELIVERED", Set.of(coffeeMachine, javaConcurrency));
         Order emilyOrder2 = createOrder(4002L, 18, "PAID", Set.of(kettle, backpack));
         Order emilyOrder3 = createOrder(4003L, 35, "NEW", Set.of(laptop, printer, mouse));
         Order emilyOrder4 = createOrder(4004L, 49, "SHIPPED", Set.of(monitor, keyboard, lamp));
@@ -156,7 +189,7 @@ public class Main {
 
         // Customer 5 — David Wilson
         Order davidOrder1 = createOrder(5001L, 9, "NEW", Set.of(headphones, mouse));
-        Order davidOrder2 = createOrder(5002L, 22, "SHIPPED", Set.of(laptop, coffeeMachine, toyCar));
+        Order davidOrder2 = createOrder(5002L, 72, "SHIPPED", Set.of(laptop, coffeeMachine, toyCar));
         Order davidOrder3 = createOrder(5003L, 40, "DELIVERED", Set.of(monitor, printer, doll));
         Order davidOrder4 = createOrder(5004L, 44, "PAID", Set.of(smartphone, kettle, lamp, streamsInJava));
         Order davidOrder5 = createOrder(5005L, 52, "CANCELLED", Set.of(keyboard, backpack, vacuumCleaner, childrenPuzzle));
