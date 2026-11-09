@@ -1,5 +1,6 @@
 package org.pshenko.javacore.stream.model;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class Customer {
@@ -29,5 +30,27 @@ public class Customer {
 
     public Set<Order> getOrders() {
         return orders;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", level=" + level +
+            ", orders=" + orders +
+            '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(id, customer.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

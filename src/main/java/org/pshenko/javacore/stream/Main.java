@@ -7,9 +7,9 @@ import org.pshenko.javacore.stream.model.Product;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Main {
     private static final LocalDate BASE_DATE = LocalDate.of(2021, 1, 1);
@@ -135,6 +135,69 @@ public class Main {
             .reduce(BigDecimal.ZERO, BigDecimal::add)
             .divide(BigDecimal.valueOf(orders14March.size()), 2, RoundingMode.HALF_UP);
         System.out.println("Средний чек заказа 14 марта 2021 года: " + average);
+
+        //Задание 10: Получите набор статистических данных (сумма, среднее, максимум, минимум, количество) для всех
+        //продуктов категории "Книги".
+        System.out.println("\nЗадание 10: Получите набор статистических данных (сумма, среднее, максимум, минимум, " +
+            "количество) для всех продуктов категории \"Книги\".");
+        List<Product> books = customers.stream()
+            .flatMap(customer -> customer.getOrders().stream())
+            .flatMap(order -> order.getProducts().stream())
+            .filter(product -> "Books".equals(product.getCategory()))
+            .toList();
+
+        DoubleSummaryStatistics stats = books.stream()
+            .mapToDouble(book -> book.getPrice().doubleValue())
+            .summaryStatistics();
+        System.out.println("Сумма стоимостей по книгам: " + stats.getSum());
+        System.out.println("Средняя стоимость по книгам: " + stats.getAverage());
+        System.out.println("Максимальная стоимость книги: " + stats.getMax());
+        System.out.println("Минимальная стоимость книги: " + stats.getMin());
+        System.out.println("Всего книг: " + stats.getCount());
+
+        // Задание 11: Получите данные Map<Long, Integer> → key - id заказа, value - кол-во товаров в заказе
+        System.out.println("\nЗадание 11. Получите данные Map<Long, Integer> → key - id заказа, value - кол-во " +
+            "товаров в заказе");
+        Map<Long, Integer> orders = customers.stream()
+            .flatMap(customer -> customer.getOrders().stream())
+            .collect(Collectors.toMap(
+                Order::getId,
+                order -> order.getProducts().size())
+            );
+        for (Map.Entry<Long, Integer> entry : orders.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
+        System.out.println("\nЗадание 12. Создайте Map<Customer, List<Order>> → key - покупатель, value - список его " +
+            "заказов\n");
+        Map<Customer, List<Order>> customersWithOrders = customers.stream()
+            .collect(Collectors.toMap(Function.identity(), customer -> customer.getOrders().stream().toList()));
+        for (Map.Entry<Customer, List<Order>> entry : customersWithOrders.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
+        System.out.println("\nЗадание 13. Создайте Map<Order, Double> → key - заказ, value - общая сумма продуктов " +
+            "заказа.\n");
+        Map<Order, Double> orderWithCost = customers.stream()
+            .flatMap(customer -> customer.getOrders().stream())
+            .collect(Collectors.toMap(Function.identity(),
+                order -> order.getProducts().stream().mapToDouble(product -> product.getPrice().doubleValue()).sum()));
+        for (Map.Entry<Order, Double> entry : orderWithCost.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
+        System.out.println("\nЗадание 14. Получите Map<String, List<String>> → key - категория, value - список " +
+            "названий товаров в категории");
+        Map<String, List<String>> categoryProducts = customers.stream()
+            .flatMap(customer -> customer.getOrders().stream())
+            .flatMap(order -> order.getProducts().stream())
+            .distinct()
+            .collect(Collectors.groupingBy(Product::getCategory, Collectors.mapping(Product::getName, Collectors.toList())));
+        for (Map.Entry<String, List<String>> entry : categoryProducts.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
+
     }
 
 

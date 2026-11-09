@@ -1,6 +1,7 @@
 package org.pshenko.javacore.stream.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 public class Order {
@@ -47,5 +48,17 @@ public class Order {
             ", status='" + status + '\'' +
             ", products=" + products +
             '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(id, order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
