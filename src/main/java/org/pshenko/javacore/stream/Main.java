@@ -5,6 +5,7 @@ import org.pshenko.javacore.stream.model.Order;
 import org.pshenko.javacore.stream.model.Product;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -132,7 +133,7 @@ public class Main {
             ? BigDecimal.ZERO
             : ordersTotals.stream()
             .reduce(BigDecimal.ZERO, BigDecimal::add)
-            .divide(BigDecimal.valueOf(orders14March.size()), 2, BigDecimal.ROUND_HALF_UP);
+            .divide(BigDecimal.valueOf(orders14March.size()), 2, RoundingMode.HALF_UP);
         System.out.println("Средний чек заказа 14 марта 2021 года: " + average);
     }
 
